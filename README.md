@@ -2,6 +2,44 @@
 
 Eine unabhängige, zweisprachige Trainings-Webapp für GitHub Pages. Kein Build, kein Konto, kein API-Schlüssel und keine laufenden Serverkosten. Die Benutzeroberfläche ist für Smartphone und Desktop gestaltet.
 
+
+## Update 1.1 — Timer, Dark Mode und flexible Maßeinheiten
+
+**Bestehende Installation aktualisieren:**
+
+1. In der bisherigen App unter **Einstellungen → Backup exportieren** eine Sicherung herunterladen.
+2. Aus diesem Paket **`app.js`, `core.js`, `style.css` und `sw.js`** im bestehenden GitHub-Repository ersetzen. `README.md` und `TESTING.md` sind Dokumentation; `tests/` wird nicht für den Betrieb benötigt. Alternativ alle App-Dateien überschreiben.
+3. Die bisherige Website-Adresse und den Repository-Namen beibehalten. Trainingsdaten liegen weiterhin unter demselben Browserschlüssel; vorhandene Daten werden automatisch in das neue Format übernommen.
+4. Nach erfolgreicher GitHub-Veröffentlichung die App einmal online öffnen/neu laden, damit der neue Service Worker heruntergeladen wird. Anschließend **alle FORM-Tabs und das installierte App-Fenster vollständig schließen und erneut öffnen**. Bei Bedarf noch einmal schließen/öffnen. Unter Einstellungen steht danach **FORM 1.1**.
+5. **Keine Browser-/Websitedaten löschen**, um das Update zu erzwingen: Dort liegt dein Trainingstagebuch. Ein Cache-Update ist kein Grund, persönliche Daten zu löschen.
+
+### Timer bedienen
+
+- Die kleine Uhr neben „Abschließen“ und die Uhr im Seitenkopf öffnen den Timer. Das übergroße Smartphone-Symbol ist durch feste SVG-Abmessungen behoben.
+- Bei zeitbasierten Übungen öffnet **Übungstimer** eine auf die Zielzeit voreingestellte Uhr. Bei wiederholungsbasierten Übungen öffnet **Pause** den Pausentimer.
+- Im Timer sind beide Modi auswählbar. Minuten und Sekunden lassen sich frei einstellen; Schnellwerte sind 30, 60, 90, 120 und 180 Sekunden.
+- **Pausieren/Fortsetzen**, **+30 s**, **Neustart** und **Stoppen** stehen zur Verfügung. Es läuft jeweils ein Timer.
+- Restzeit und Pausenstatus bleiben nach einem Neuladen erhalten. Der Countdown verwendet eine absolute Endzeit, damit Hintergrunddrosselung nicht zu einer falschen Restzeit führt.
+- Nach Ablauf gibt es eine sichtbare Meldung sowie einen Ton und Vibration, soweit der Browser dies zulässt. Bei gesperrtem Bildschirm, im Hintergrund oder nach einem Neuladen ohne erneute Benutzerinteraktion sind akustische Signale nicht garantiert.
+- Ein abgelaufener Übungstimer kann mit **Zeit in Übung übernehmen** die Dauer in den nächsten noch offenen Block dieser Übung eintragen. Ein Satz wird **nicht automatisch abgehakt**. Bitte die tatsächliche Ausführung selbst bestätigen. Ein Pausentimer wird nicht als Trainingsdauer eingetragen.
+
+### Dark Mode
+
+- Über das Mondsymbol oben zwischen Hell und Dunkel wechseln.
+- Unter **Einstellungen → Darstellung** zwischen **Hell**, **Dunkel** und **Wie das Gerät** wählen.
+- Die Auswahl wird im Browser und im JSON-Backup gespeichert. Standard ist die Geräteeinstellung.
+
+### Minuten oder Wiederholungen
+
+- **Dauerhaft für einen Trainingstag:** Mein Training → Plan bearbeiten → bei der Übung **Maßeinheit** wählen. Für Wiederholungen sind Sätze, Min./Max.-Wiederholungen und Pausen einstellbar.
+- **Nur für die offene Einheit:** Bei der Übung die Schaltfläche neben **Erfassung** antippen. Bereits erfasste Minuten/Wiederholungen dieser offenen Übung werden nur nach Bestätigung geleert; es findet keine rechnerische Umwandlung statt.
+- **Standard für neu hinzugefügte Übungen:** Übungsbibliothek → Bearbeiten → **Standard-Maßeinheit**. Bestehende Trainingstage behalten ihre dort separat eingestellte Maßeinheit.
+- Die Kategorie bleibt unabhängig davon Kraft, Cardio oder Mobility. Eine Mobility-Übung in Wiederholungen braucht kein Gewicht; kg ist optional.
+- Historische Einheiten behalten ihre ursprüngliche Maßeinheit. Fortschrittsdiagramme trennen Minuten und Wiederholungen, statt fehlende Werte als Null zu behandeln.
+- Die Wochenzeit enthält nur ausdrücklich geplante Minuten. Wiederholungsbasierte Mobility benötigt zusätzlich Zeit, die nicht automatisch geschätzt wird.
+
+Alte JSON-Backups werden akzeptiert. Neue Backups verwenden Datenformat 2 und benötigen FORM 1.1 oder neuer. Das Update greift nicht auf dein GitHub-Konto zu und ist noch nicht in deinem Repository veröffentlicht.
+
 ## Schnellstart: auf GitHub veröffentlichen
 
 1. ZIP-Datei entpacken.
@@ -25,9 +63,9 @@ Alle Pfade sind relativ. Die App funktioniert sowohl in einem Repository-Unterpf
 - Hack Squat, Rudern, Kurzhanteldrücken, RDL und alle weiteren Übungen des optimierten Plans sind eingetragen. Bei „Klimmzüge oder Latziehen“ ist Latziehen voreingestellt; Klimmzüge sind als Alternative in der Bibliothek verfügbar.
 - Zeitwerte sind Planwerte. Aufwärmsätze, Gerätewechsel und längere Satzpausen können zusätzliche Zeit erfordern.
 - Pro Kraftsatz Gewicht, Wiederholungen und optional RIR notieren und abhaken. 0 kg steht für eine reine Körpergewichtsübung. Aufwärmsätze sind nicht Teil der vorgegebenen Arbeitssätze.
-- Für Cardio Minuten, optional Kilometer und RPE erfassen. Für Mobility Minuten und optional Gewicht erfassen, etwa bei Farmer’s Carries.
+- Für Cardio Minuten, optional Kilometer und RPE erfassen. Für Mobility Minuten oder Wiederholungen und optional Gewicht erfassen, etwa bei Farmer’s Carries.
 - Werte der letzten abgeschlossenen Einheit direkt beim Training sehen. Neue Eingaben werden automatisch gespeichert. Nach dem Neuladen lässt sich eine offene Einheit fortsetzen.
-- Pausen- und Übungstimer per Klick starten. Er verwendet eine absolute Endzeit und bleibt auch nach einem Tabwechsel zeitlich korrekt. Im Hintergrund kann der Browser die Anzeige verzögern; es gibt keine garantierte akustische Erinnerung.
+- Pausen- und Übungstimer per Klick starten. Er verwendet eine absolute Endzeit und bleibt auch nach einem Tabwechsel zeitlich korrekt. Im Hintergrund kann der Browser die Anzeige verzögern; akustische Signale im Hintergrund sind nicht garantiert.
 - Trainingstage ergänzen, löschen und umbenennen. Übungen hinzufügen, entfernen, umsortieren sowie Sätze, Wiederholungen, Supersatzgruppen, Pausen und Zeitbudget ändern.
 - Eigene Übungen mit Anleitungen in beiden Sprachen und eigenem JPG-/PNG-/WebP-Bild hinzufügen. Bilder werden auf maximal 800 Pixel verkleinert und lokal als JPEG gespeichert.
 - Beste Last, Volumen, Wiederholungen, geschätztes 1RM, Dauer oder Strecke pro Übung über die Zeit vergleichen. Nur abgehakte Einträge zählen.
@@ -77,7 +115,7 @@ Weiterführende Übungsbibliothek: https://www.acefitness.org/resources/everyone
 
 Nach dem ersten vollständigen Laden über HTTPS legt der Service Worker die App-Dateien offline ab. Externe Video- und Quellenlinks benötigen weiterhin Internet. Die Installationsmöglichkeit hängt vom Browser ab. Unter iOS: Safari → Teilen → Zum Home-Bildschirm; unter Android/Chrome: Browsermenü → App installieren, sofern angeboten.
 
-Beim Ändern von App-Dateien den Versionssuffix in `sw.js` erhöhen, z. B. von `v1.0.0` auf `v1.0.1`, und zusammen mit allen geänderten Dateien veröffentlichen. Nach dem Laden der neuen Version alle FORM-Tabs und das installierte App-Fenster schließen und erneut öffnen. Der Service Worker aktiviert neue Dateien erst nach dem Schließen alter Fenster. Trainingsdaten werden bei normalen Updates nicht gelöscht.
+Beim Ändern von App-Dateien den Versionssuffix in `sw.js` erhöhen, z. B. von `v1.1.0` auf `v1.1.1`, und zusammen mit allen geänderten Dateien veröffentlichen. Nach dem Laden der neuen Version alle FORM-Tabs und das installierte App-Fenster schließen und erneut öffnen. Der Service Worker aktiviert neue Dateien erst nach dem Schließen alter Fenster. Trainingsdaten werden bei normalen Updates nicht gelöscht.
 
 ## Für Weiterentwicklung
 
