@@ -1,6 +1,6 @@
 /* Scope-specific cache: safe for multiple GitHub Pages projects on one origin. */
 const PREFIX='form-training:'+self.registration.scope+':';
-const CACHE=PREFIX+'v1.1.0';
+const CACHE=PREFIX+'v1.2.0';
 const FILES=['./','./index.html','./style.css','./data.js','./core.js','./app.js','./icon.svg','./icon-192.png','./icon-512.png','./manifest.webmanifest'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)));

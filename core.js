@@ -38,10 +38,22 @@
     if(sets.every(s=>s.reps>=e.target.max&&s.rir!==null&&s.rir>=1)&&e.target.max>0)return 'increase';
     return 'reps';
   };
-  const makeDraft=(day,exercises,sessions)=>({id:uid(),dayId:day.id,name:clone(day.name),date:localDate(),createdAt:Date.now(),startedAt:Date.now(),duration:null,readiness:'3',notes:'',editingId:null,entries:day.entries.map(target=>{
-    const e=exercises.find(e=>e.id===target.exerciseId); const last=lastEntry(sessions,e.id);const previous=last?.entry.sets||[];
+  const defaultTarget=e=>({exerciseId:e.id,unit:unit(e),sets:unit(e)==='reps'?(e.type==='strength'?3:2):1,min:unit(e)==='reps'?8:0,max:unit(e)==='reps'?12:0,group:'',rest:unit(e)==='reps'?90:60,minutes:unit(e)==='minutes'?(e.type==='cardio'?20:3):0});
+  const replacementTarget=(old,e)=>old&&old.type===e.type&&unit(old)===unit(e)?{...clone(old.target),exerciseId:e.id,unit:unit(e)}:{...defaultTarget(e),group:old?.target?.group||''};
+  const makeEntry=(target,e,sessions,date=localDate(),excludeId=null)=>{
+    const last=lastEntry(sessions.filter(s=>s.id!==excludeId),e.id,date),previous=last?.entry.sets||[];
     return {exerciseId:e.id,name:clone(e.name),type:e.type,unit:target.unit||unit(e),target:{...clone(target),unit:target.unit||unit(e)},notes:'',sets:Array.from({length:(target.unit||unit(e))==='reps'?target.sets:1},(_,i)=>({weight:previous[i]?.weight??previous[0]?.weight??null,reps:null,rir:null,minutes:null,distance:null,rpe:null,done:false}))};
-  })});
+  };
+  const hasEntryData=e=>Boolean(e.notes.trim()||e.sets.some(s=>s.done||['weight','reps','rir','minutes','distance','rpe'].some(k=>s[k]!==null)));
+  const replaceEntry=(session,index,e,sessions,target)=>{
+    if(!session.entries[index])throw new Error('missing_entry');
+    if(session.entries.some(x=>x.exerciseId===e.id))throw new Error('duplicate');
+    const next=clone(session),kept=hasEntryData(session.entries[index]);
+    if(kept&&next.entries.length>=50)throw new Error('limit');
+    const at=index+(kept?1:0),entry=makeEntry(target||replacementTarget(session.entries[index],e),e,sessions,session.date,session.editingId);
+    next.entries.splice(at,kept?0:1,entry);return {session:next,kept,index:at};
+  };
+  const makeDraft=(day,exercises,sessions)=>({id:uid(),dayId:day.id,name:clone(day.name),date:localDate(),createdAt:Date.now(),startedAt:Date.now(),duration:null,readiness:'3',notes:'',editingId:null,entries:day.entries.map(target=>makeEntry(target,exercises.find(e=>e.id===target.exerciseId),sessions))});
   const weekStart=(d=new Date())=>{const c=new Date(d);c.setDate(c.getDate()-((c.getDay()+6)%7));return localDate(c);};
   const totalMinutes=(day,exercises)=>day.warmup+day.block+day.entries.filter(e=>(e.unit||unit(exercises.find(x=>x.id===e.exerciseId)))==='minutes').reduce((n,e)=>n+e.minutes,0);
   // Backups are untrusted input. Validate nested fields before using or replacing data.
@@ -69,6 +81,6 @@
     else if(value.version===1&&value.restEnd!=null){const end=num(value.restEnd,0,1e15);const seconds=Math.min(18000,Math.max(1,Math.ceil((end-Date.now())/1000)));timer=newTimer('rest',seconds,{de:'Pause',en:'Rest'});timer.endAt=end;}
     return {version:2,theme:enumV(value.theme??'system',['system','light','dark']),timer,lang:enumV(value.lang,['de','en']),exercises,days,sessions,draft:value.draft===null?null:session(value.draft,true),backupAt:value.backupAt===null?null:str(value.backupAt,40)};
   }
-  root.FORMCore={unit,validSet,remaining,newTimer,pauseTimer,resumeTimer,addTimer,clone,uid,localDate,dateValid,initial,metric,series,lastEntry,suggest,makeDraft,weekStart,totalMinutes,validate};
+  root.FORMCore={defaultTarget,replacementTarget,makeEntry,hasEntryData,replaceEntry,unit,validSet,remaining,newTimer,pauseTimer,resumeTimer,addTimer,clone,uid,localDate,dateValid,initial,metric,series,lastEntry,suggest,makeDraft,weekStart,totalMinutes,validate};
   if(typeof module!=='undefined'&&module.exports)module.exports=root.FORMCore;
 })(globalThis);

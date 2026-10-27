@@ -3,17 +3,38 @@
 Eine unabhängige, zweisprachige Trainings-Webapp für GitHub Pages. Kein Build, kein Konto, kein API-Schlüssel und keine laufenden Serverkosten. Die Benutzeroberfläche ist für Smartphone und Desktop gestaltet.
 
 
-## Update 1.1 — Timer, Dark Mode und flexible Maßeinheiten
+## Update 1.2 — Übungen austauschen und direkt hinzufügen
 
 **Bestehende Installation aktualisieren:**
 
 1. In der bisherigen App unter **Einstellungen → Backup exportieren** eine Sicherung herunterladen.
 2. Aus diesem Paket **`app.js`, `core.js`, `style.css` und `sw.js`** im bestehenden GitHub-Repository ersetzen. `README.md` und `TESTING.md` sind Dokumentation; `tests/` wird nicht für den Betrieb benötigt. Alternativ alle App-Dateien überschreiben.
-3. Die bisherige Website-Adresse und den Repository-Namen beibehalten. Trainingsdaten liegen weiterhin unter demselben Browserschlüssel; vorhandene Daten werden automatisch in das neue Format übernommen.
-4. Nach erfolgreicher GitHub-Veröffentlichung die App einmal online öffnen/neu laden, damit der neue Service Worker heruntergeladen wird. Anschließend **alle FORM-Tabs und das installierte App-Fenster vollständig schließen und erneut öffnen**. Bei Bedarf noch einmal schließen/öffnen. Unter Einstellungen steht danach **FORM 1.1**.
+3. Die bisherige Website-Adresse und den Repository-Namen beibehalten. Trainingsdaten liegen weiterhin unter demselben Browserschlüssel. Version 1.2 verwendet das Datenformat von Version 1.1; Daten aus Version 1.0 werden automatisch übernommen.
+4. Nach erfolgreicher GitHub-Veröffentlichung die App einmal online öffnen/neu laden, damit der neue Service Worker heruntergeladen wird. Anschließend **alle FORM-Tabs und das installierte App-Fenster vollständig schließen und erneut öffnen**. Bei Bedarf noch einmal schließen/öffnen. Unter Einstellungen steht danach **FORM 1.2**.
 5. **Keine Browser-/Websitedaten löschen**, um das Update zu erzwingen: Dort liegt dein Trainingstagebuch. Ein Cache-Update ist kein Grund, persönliche Daten zu löschen.
 
-### Timer bedienen
+### Übungen austauschen
+
+- Im laufenden Training oder im Plan auf **Tauschen** neben der Übung tippen.
+- Hinterlegte Alternativen und ähnliche Bewegungsmuster stehen zuerst. Suche und Bereichsfilter erschließen die gesamte Bibliothek. Vorschläge sind eine Sortierhilfe; Zielwerte, Belastung und Ausführung selbst prüfen.
+- Eine Übung auswählen, Sätze/Wiederholungen/Pause oder Zielminuten prüfen und **Austausch übernehmen** drücken.
+- Im laufenden Training gilt die Änderung standardmäßig **nur für diese Einheit**. Mit **Diese Einheit + diesen Trainingstag im Plan** wird zusätzlich die Vorlage angepasst. Beim Bearbeiten historischer Einheiten ist diese dauerhafte Option nicht verfügbar.
+- Im Plan werden Änderungen erst mit **Tag speichern** übernommen. Beim Zurückgehen aus der Auswahl bleiben ungespeicherte Änderungen am Tag erhalten.
+- Bereits vorhandene Werte, vorausgefüllte Gewichte, Häkchen oder Notizen bleiben geschützt: In diesem Fall bleibt die bisherige Übung stehen und die neue wird direkt dahinter ergänzt. Ein noch leerer Eintrag wird ersetzt.
+- Gewichte werden ausschließlich aus der Historie der neu ausgewählten Übung vorausgefüllt. Alte Trainingseinheiten und die Fortschrittsdaten anderer Übungen werden nicht umgeschrieben.
+- Doppelte Übungen innerhalb derselben Einheit oder desselben Trainingstags sind ausgeschlossen. Ein laufender Timer für die ausgetauschte Übung wird beendet.
+
+### Übungen hinzufügen oder neu anlegen
+
+- Im Training oder Plan **Übung hinzufügen** wählen; im Plan-Editor **Übung suchen / neu erstellen**.
+- Eine vorhandene Übung suchen und auswählen oder **Eigene Übung erstellen** öffnen.
+- Eigene Übungen können deutsche/englische Namen und Anleitungen, Kategorie, Gerät, Standard-Maßeinheit und ein eigenes Bild erhalten.
+- Nach **Speichern** ist die eigene Übung in der Bibliothek und in der Auswahl vorgewählt. Zielwerte prüfen und mit **Übung hinzufügen** zur Einheit bzw. zum Plan übernehmen.
+- Die Auswahl **nur diese Einheit / zusätzlich im Plan** ist auch beim Hinzufügen während des Trainings verfügbar. Zusätzliche Übungen verlängern das geplante Training.
+
+### Weiterhin enthalten: Timer, Dark Mode und flexible Maßeinheiten
+
+#### Timer bedienen
 
 - Die kleine Uhr neben „Abschließen“ und die Uhr im Seitenkopf öffnen den Timer. Das übergroße Smartphone-Symbol ist durch feste SVG-Abmessungen behoben.
 - Bei zeitbasierten Übungen öffnet **Übungstimer** eine auf die Zielzeit voreingestellte Uhr. Bei wiederholungsbasierten Übungen öffnet **Pause** den Pausentimer.
@@ -23,13 +44,13 @@ Eine unabhängige, zweisprachige Trainings-Webapp für GitHub Pages. Kein Build,
 - Nach Ablauf gibt es eine sichtbare Meldung sowie einen Ton und Vibration, soweit der Browser dies zulässt. Bei gesperrtem Bildschirm, im Hintergrund oder nach einem Neuladen ohne erneute Benutzerinteraktion sind akustische Signale nicht garantiert.
 - Ein abgelaufener Übungstimer kann mit **Zeit in Übung übernehmen** die Dauer in den nächsten noch offenen Block dieser Übung eintragen. Ein Satz wird **nicht automatisch abgehakt**. Bitte die tatsächliche Ausführung selbst bestätigen. Ein Pausentimer wird nicht als Trainingsdauer eingetragen.
 
-### Dark Mode
+#### Dark Mode
 
 - Über das Mondsymbol oben zwischen Hell und Dunkel wechseln.
 - Unter **Einstellungen → Darstellung** zwischen **Hell**, **Dunkel** und **Wie das Gerät** wählen.
 - Die Auswahl wird im Browser und im JSON-Backup gespeichert. Standard ist die Geräteeinstellung.
 
-### Minuten oder Wiederholungen
+#### Minuten oder Wiederholungen
 
 - **Dauerhaft für einen Trainingstag:** Mein Training → Plan bearbeiten → bei der Übung **Maßeinheit** wählen. Für Wiederholungen sind Sätze, Min./Max.-Wiederholungen und Pausen einstellbar.
 - **Nur für die offene Einheit:** Bei der Übung die Schaltfläche neben **Erfassung** antippen. Bereits erfasste Minuten/Wiederholungen dieser offenen Übung werden nur nach Bestätigung geleert; es findet keine rechnerische Umwandlung statt.
@@ -67,6 +88,7 @@ Alle Pfade sind relativ. Die App funktioniert sowohl in einem Repository-Unterpf
 - Werte der letzten abgeschlossenen Einheit direkt beim Training sehen. Neue Eingaben werden automatisch gespeichert. Nach dem Neuladen lässt sich eine offene Einheit fortsetzen.
 - Pausen- und Übungstimer per Klick starten. Er verwendet eine absolute Endzeit und bleibt auch nach einem Tabwechsel zeitlich korrekt. Im Hintergrund kann der Browser die Anzeige verzögern; akustische Signale im Hintergrund sind nicht garantiert.
 - Trainingstage ergänzen, löschen und umbenennen. Übungen hinzufügen, entfernen, umsortieren sowie Sätze, Wiederholungen, Supersatzgruppen, Pausen und Zeitbudget ändern.
+- Übungen im Training oder Plan direkt austauschen, Alternativen suchen und eigene Übungen ohne Umweg über die Bibliothek erstellen. Änderungen optional nur für die aktuelle Einheit übernehmen.
 - Eigene Übungen mit Anleitungen in beiden Sprachen und eigenem JPG-/PNG-/WebP-Bild hinzufügen. Bilder werden auf maximal 800 Pixel verkleinert und lokal als JPEG gespeichert.
 - Beste Last, Volumen, Wiederholungen, geschätztes 1RM, Dauer oder Strecke pro Übung über die Zeit vergleichen. Nur abgehakte Einträge zählen.
 - Historische Trainingseinheiten ansehen, korrigieren und löschen. Jede Einheit enthält eine eigene Kopie der damaligen Übungsnamen, Erfassungsarten und Zielwerte. Spätere Planänderungen schreiben keine Historie um.
@@ -115,7 +137,7 @@ Weiterführende Übungsbibliothek: https://www.acefitness.org/resources/everyone
 
 Nach dem ersten vollständigen Laden über HTTPS legt der Service Worker die App-Dateien offline ab. Externe Video- und Quellenlinks benötigen weiterhin Internet. Die Installationsmöglichkeit hängt vom Browser ab. Unter iOS: Safari → Teilen → Zum Home-Bildschirm; unter Android/Chrome: Browsermenü → App installieren, sofern angeboten.
 
-Beim Ändern von App-Dateien den Versionssuffix in `sw.js` erhöhen, z. B. von `v1.1.0` auf `v1.1.1`, und zusammen mit allen geänderten Dateien veröffentlichen. Nach dem Laden der neuen Version alle FORM-Tabs und das installierte App-Fenster schließen und erneut öffnen. Der Service Worker aktiviert neue Dateien erst nach dem Schließen alter Fenster. Trainingsdaten werden bei normalen Updates nicht gelöscht.
+Beim Ändern von App-Dateien den Versionssuffix in `sw.js` erhöhen, z. B. von `v1.2.0` auf `v1.2.1`, und zusammen mit allen geänderten Dateien veröffentlichen. Nach dem Laden der neuen Version alle FORM-Tabs und das installierte App-Fenster schließen und erneut öffnen. Der Service Worker aktiviert neue Dateien erst nach dem Schließen alter Fenster. Trainingsdaten werden bei normalen Updates nicht gelöscht.
 
 ## Für Weiterentwicklung
 
